@@ -11,7 +11,7 @@ docker-compose build
 * start griddb && pgspider:griddb
 
 ```code
-docker-compose up -d griddb pgspider-griddb
+docker-compose up -d griddb pgspider-griddb graphql-engine
 ```
 
 * init some datas
@@ -31,4 +31,10 @@ CREATE SERVER griddb_svr FOREIGN DATA WRAPPER griddb_fdw OPTIONS(notification_me
 CREATE USER MAPPING FOR public SERVER griddb_svr OPTIONS(username 'admin', password 'admin');
 IMPORT FOREIGN SCHEMA griddb_schema FROM SERVER griddb_svr INTO public;
 select * from col01;
+```
+
+* graphql-engine service
+
+```code
+open http://localhost:8080
 ```

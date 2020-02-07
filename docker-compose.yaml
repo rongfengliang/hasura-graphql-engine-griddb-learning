@@ -1,0 +1,29 @@
+version: "3"
+services: 
+  pgspider-griddb:
+    image: dalongrong/pgspider:griddb-4.2
+    environment: 
+    - "POSTGRES_PASSWORD=dalong"
+    ports: 
+    - "5432:5432"
+  griddb-java:
+    build: 
+      context: ./
+      dockerfile: ./Dockerfile-java
+    environment: 
+    - "MEMBER_ADDR=griddb:10001"
+  griddb:
+    build: ./
+    volumes: 
+    - "./log:/var/lib/gridstore/log"
+    ports:
+    - "10001:10001"
+    - "10010:10010" 
+    - "10020:10020" 
+    - "10030:10030" 
+    - "10040:10040"
+    - "10050:10050"
+    - "10080:10080"
+    - "20001:20001"
+
+  

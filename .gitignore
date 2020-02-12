@@ -1,2 +1,6 @@
 log
 README-influxdb.md
+config
+dependency-reduced-pom.xml
+docker-compose-old.yaml
+node_modules

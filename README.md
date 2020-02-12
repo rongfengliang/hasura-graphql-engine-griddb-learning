@@ -1,4 +1,4 @@
-# pgspider + griddb
+# pgspider + griddb + plv8
 
 ##  how to running
 
@@ -11,7 +11,7 @@ docker-compose build
 * start griddb && pgspider:griddb
 
 ```code
-docker-compose up -d griddb pgspider-griddb graphql-engine
+docker-compose up -d griddb pgspider-griddb
 ```
 
 * init some datas
@@ -21,7 +21,7 @@ docker-compose up -d griddb pgspider-griddb graphql-engine
 docker-compose up griddb-java
 ```
 
-* use extension
+* use griddb_fdw extension
 
 ```code
 CREATE EXTENSION griddb_fdw;
@@ -33,8 +33,27 @@ IMPORT FOREIGN SCHEMA griddb_schema FROM SERVER griddb_svr INTO public;
 select * from col01;
 ```
 
-* graphql-engine service
+* use plv8 extension
 
 ```code
-open http://localhost:8080
+
+// create plv8 extension
+CREATE EXTENSION plv8;
+
+// create shortid func
+CREATE or replace FUNCTION shortid() RETURNS text AS
+$$
+   const shortid = require('shortid');
+   const result = shortid.generate();
+   return result;
+$$
+LANGUAGE plv8;
+// register plv8  require funcs
+cd node-app && yarn &&  node app.js 
+// alter  database for session init plv8 func
+ALTER DATABASE postgres SET "plv8.start_proc" TO "v8.plv8_init";
+// maybe need restart pg server
+
+// do some insert with  knex orm framework 
+cd node-app && yarn &&  node index.js 
 ```
